@@ -1,0 +1,132 @@
+---
+title: "Covid"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(plotly)
+library(ggmap)
+```
+
+```{r}
+path1 <- "C:/Users/andre/OneDrive/Documenti/unimib/magistrale/secondo anno/lab R per biostat/files/ricoverati.csv"
+aaa <- read.csv(path1, header = TRUE, sep = ";")
+```
+
+```{r}
+path2 <- "C:/Users/andre/OneDrive/Documenti/unimib/magistrale/secondo anno/lab R per biostat/files/decessi.csv"
+bbb <- read.csv(path2, header = TRUE, sep = ";")
+```
+
+```{r}
+path3 <- "C:/Users/andre/OneDrive/Documenti/unimib/magistrale/secondo anno/lab R per biostat/files/coord.csv"
+ccc <- read.csv(path3, header = TRUE, sep = ";")
+```
+
+```{r}
+data_long <- gather(bbb, Country, decessi, Austria:United.Kingdom, factor_key = TRUE)
+```
+
+```{r}
+h2 <- left_join(data_long, ccc[,1:3], by = c("Country"="Country"))
+```
+
+```{r}
+finale <- aaa %>%
+  bind_rows(bbb) %>%
+  pivot_longer(names_to="Country", values_to = "Casi", 3:ncol(.))%>%
+  pivot_wider(names_from="evento", values_from = "Casi")%>%
+  mutate_at(vars(data),as.character())
+```
+
+```{r}
+base <- finale%>%
+  filter(data%in% c("2020-03-28", "2020-04-28", "2020-05-28", "2020-06-28", "2020-07-28",
+                    "2020-08-28", "2020-09-28"))%>%
+  plot_ly(x=~ricovero, y=~decesso, text=~Country, hoverinfo="text")%>%
+  layout(xaxis=list(type="log"))
+```
+
+```{r}
+#base %>%
+#  add_markers(color=Country, frame=~data)%>%
+#  animation_opts(1000, easing="elastic", redraw = FALSE)%>%
+#  animation_slider(currentvalue=list(prefix="data", font=list(color="red")))
+```
+
+
+
+
+
+
+Dati {data-icon="fa-globe"}
+===
+
+Column {data-width=650}
+-------------------------------------------------
+
+###Andamento casi in Italia
+
+```{r}
+p1=plot_ly(data=aaa, x=aaa$data, y=aaa$Italy) %>%
+  layout(xaxis=list(title="data"), yaxis=list(title="Casi"))
+p1
+```
+Mappe
+===
+
+Column {data-width=650}
+-------------------------------------------------
+
+### Mappa decessi
+
+```{r}
+p2= plot_geo(h2, locationmode="world")%>%
+  add_markers(x=h2$Long, y=h2$Lat, size=h2$decessi, color=h2$Country, text="titolo", 
+              hoverinfo="text")%>%
+  layout()
+
+p2
+```
+
+
+Andamenti casi italia
+===
+
+Column {data-width=650}
+-------------------------------------------------
+
+*** Chart B
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+Metodi
+===
+
+Column {data-width=650}
+-------------------------------------------------
+
+*** Chart B
+
+```{r}
+
+```
+
+
+Risultati
+===
+

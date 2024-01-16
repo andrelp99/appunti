@@ -1,0 +1,96 @@
+---
+title: "r markdown"
+output: pdf_document
+---
+
+# GUIDA R MARKDOWN
+# 1. INDENTAZIONE
+# 2. CHUNCKS
+# 3. RISULTATO MARKDOWN
+# 4. ALTRO
+
+
+
+
+
+
+
+# 1. INDENTATION (Indentazione)
+
+*corsivo*  _corsivo_  
+
+**grassetto**   __grassetto__  
+**# Titolo gigante**
+
+## Titolo2 grande
+
+### Titolo medio
+
+#### Titolo piccolo  
+
+^apice^  
+* per punti di una lista  
+
+col_1     |  col_2
+--------- | ------------
+el_1      |  el_2
+
+
+
+
+
+
+
+
+# 2. CHUNCKS
+
+I chuncks contengono tutte le parti di codice, e possono avere diverse opzioni in base all'utilizzo:
+- eval = FALSE per non eseguire il codice, ma mostrarlo e basta (TRUE, che è il default, 
+per eseguirlo invece);
+- include = FALSE per non far apparire nè il codice nè i risultati del codice nel Markdown finale (TRUE, che è il default, per far apparire tutto invece);
+- echo = FALSE per non far apparire il codice, ma solo il risultato finale;
+- message = FALSE per non far apparire nel risultato finale eventuali messaggi;
+- warning = FALSE per non far apparire i warnings nel risultato finale.
+
+
+
+
+Per aprire un nuovo chunck, premere ctrl+alt+i, oppure da "Code" --> "Insert Chunck"
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+# 3. RISULTATO MARKDOWN
+Quando si ha compilato il file su RStudio, si può far compilare il markdown premendo su knit (in automatico lo compilerà col formato indicato all'inizio, altrimenti premendo sulla freccia sarà
+possibile cambiare formato). 
+
+Si può scegliere la cartella del knitr, e il formato (word, pdf, pagina html...).
+
+E' sempre consigliabile knittare il file più volte, durante la compilazione, per fare delle prove intermedie, piuttosto che fare tutto insieme alla fine. 
+
+
+
+
+
+
+
+
+# 4. ALTRO
+ E' possibile ottenere in un file R (con estensione .R) a parte solamente la parte di codice contenuta nei chunks con il seguente comando
+ 
+```{r}
+knitr::purl("Stat1.Rmd",
+"Stat1.R",
+documentation = 1)
+```
+ 
+ 
